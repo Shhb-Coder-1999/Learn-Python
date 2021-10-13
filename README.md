@@ -5,11 +5,12 @@ learn python with linux(obunto) for OS Lab university course <br />
 98440275 <br />
 OS Lab code 2
 
+. [Assignment 2](#Assignment_2)
 
 # * * *
 
+<p id="#Assignment_2"># Assignment 2</p>
 
-# Assignment 2
 
 <div dir="rtl">۱- قابلیت های زیر را به برنامه ماشین حساب اضافه کنید:
 
