@@ -5,11 +5,19 @@ learn python with linux(obunto) for OS Lab university course <br />
 98440275 <br />
 OS Lab code 2
 
+<hr>
 
-# * * *
+- [Assignment 2](#Assignment_2)
+- [Assignment 1](#Assignment_1)
 
+<hr>
 
+<p id="Assignment_2">
+	
 # Assignment 2
+
+</p>
+
 
 <div dir="rtl">۱- قابلیت های زیر را به برنامه ماشین حساب اضافه کنید:
 
@@ -49,7 +57,11 @@ OS Lab code 2
 
 
 
+<p dir="ltr" id="Assignment_1">
+	
 # Assignment 1
+
+</p>
 
 <div dir="rtl">۱- دستورات زیر را در ترمینال اجرا کنید. نتیجه اجرای دستورات را مشخص کنید و در قالب یک جمله فارسی توضیح دهید. آیا terminal به کوچک و بزرگ بودن حروف دستورات حساس است؟
 
