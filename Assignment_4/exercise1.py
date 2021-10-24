@@ -126,7 +126,6 @@ def playwithpc():
                 printgame()
 
 
-
 def twoplayers():
     
     while True:
@@ -172,7 +171,6 @@ def twoplayers():
          break              
 
 
-
 menu_options = {
     1: 'play with pc',
     2: 'play with another person',
@@ -182,13 +180,6 @@ menu_options = {
 def print_menu():
     for key in menu_options.keys():
         print (key, '--', menu_options[key] )
-
-def option1():
-     print('Handle option \'Option 1\'')
-
-def option2():
-     print('Handle option \'Option 2\'')
-
 
 if __name__=='__main__':
     while(True):
