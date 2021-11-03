@@ -5,65 +5,51 @@ class Shop:
     products = [] 
     User_Bill = []
   
-
     def __init__(self):
-        #  load product
-         self._name = name
-           
-      
-    # getter method
-    def get_products(self):
-        return self.products
-
-    def get_User_Bill(self):
-        return self.User_Bill
-
-
-    # setter method
-    def get_products(self, x):
-        self.products = x
-
-    def get_User_Bill(self, x):
-        self.User_Bill = x
+        f = open('/media/shb/3C50BD1450BCD63C/programming/Github/Learn_Python/Assignment_5/database.csv', 'r')
+        for row in f:
+            detail = row[:-1].split(',')
+            product = {'name': detail[0], 'id': detail[1], 'price': detail[3], 'amount': detail[2]}
+            self.products.append(product)
 
     @classmethod   
 
     def Add_New_Product (self , name , id , price , amount):
-        self.products.append({"name":name , "id":id , "price":price , "amount":amount   })
+        self.products.append({'name':name , "id":id , "price":price , "amount":amount })
 
     def Remove_Product (self , product_index):
-        self.products.pop(product_index)  
-              
+        self.products.pop(product_index-1)              
 
     def Show_Products_List(self) :
         print("--------Products List-------")
-        print("Number |" , "Name |" , "Id |" , "Price |" ,"Amount")
+        print("Number|" , "Name|" , "Id |" , "Price|" ,"Amount")
         print("-------------------------------------------------")
         counter = 1
         for product in self.products :
-            print(counter , product.name , product.id, product.price ,product.amount)
+          
+            print(counter,"    |" , product['name'],"|" , product['id'],"|" , product['price'] ,"|" ,product['amount'])
             counter +=1
             print("-------------------------------------------------")
 
-    def Edit_Product(self , index , param) :
-        if (param == 'id') :
-           self.products[index].id = param  
-        elif(param == 'name') : 
-           self.products[index].name = param 
-        elif(param == 'amount') : 
-           self.products[index].amount = param     
-        elif(param == 'price') : 
-           self.products[index].price = param  
+    def Edit_Product(self , index , param ,paramnum ) :
+        if (paramnum  == 2) :
+           self.products[index]['id'] = param        
+        elif(paramnum  == 1) : 
+           self.products[index]['name'] = param 
+        elif(paramnum  == 3) : 
+           self.products[index]['amount'] = param     
+        elif(paramnum  == 4) : 
+           self.products[index]['price'] = param  
 
     def Search_Product(self , SearchInput) :
          counter = 0 
          for product in self.products :
              if SearchInput in product: 
                 print("-------Product Details-------")
-                print("Name :",product.name)
-                print("Price :",product.price)
-                print("Id :",product.id)
-                print("Amount :",product.amount)
+                print("Name :",product['name'])
+                print("Price :",product['price'])
+                print("Id :",product['id'])
+                print("Amount :",product['amount'])
                 print("-----------------------------")
              else :
                  counter += 1
@@ -72,18 +58,19 @@ class Shop:
              print("-----------------------------") 
 
     def Bill(self , product_index ,amount) :
-        self.User_Bill.append({"product" : self.products[product_index].name , "amount":amount})
+        self.User_Bill.append({"name" : self.products[product_index]['name'] , "amount":amount, "price": self.products[product_index]['price']})
 
     def Show_Bill(self)   :
+
         sum = 0 ;
         amount = 0;
         print("----------Your Bill----------")
         print("Name |" , "Id |" , "Price |" ,"Amount")
         for item in self.User_Bill :
-             print(item.product.name , item.product.id, item.product.price ,item.amount)
-             amount += item.amount
-             sum += item.product.price*item.amount
-        print("amount : " + amount , "Total : " + sum) 
+             amount += item['amount']
+             sum += int(item['price'])*item['amount']
+        print("amount : " , amount , "Total : "  , sum) 
+
 
     def Menu(self):
        
@@ -95,7 +82,7 @@ class Shop:
         5: 'Search_Product',
         6: 'Buy Product ',
         7: 'Show Bill',
-        0: 'Exit',
+        0: 'Save & Exit',
             }
 
         def print_menu():
@@ -110,24 +97,23 @@ class Shop:
                     option = int(input('Enter your choice: '))
                 except:
                     print('Wrong input. Please enter a number ...')
-                
-                #Check what choice was entered and act accordingly
+             
                 if option == 1:
                 
                     self.Show_Products_List()
 
                 elif option == 2:
                     id = int(input('Enter your product id: '))
-                    name = input('Enter your product number: ')
-                    price = int(input('Enter your product number: '))
-                    amount = int(input('Enter your product number: '))
+                    name = input('Enter your product name: ')
+                    price = int(input('Enter your product price: '))
+                    amount = int(input('Enter your product amount: '))
                     self.Add_New_Product(name , id , price , amount)
                     print("--------Done----------")
 
                 elif option == 3:
                    
                     number = int(input('Enter your product number: '))
-                    if len(self.products)>number and number>0 :
+                    if len(self.products)>=number and number>0 :
                         self.Remove_Product(number) 
                         print("--------Done----------") 
                     else:
@@ -135,32 +121,41 @@ class Shop:
 
                 elif option == 4: 
                     number = int(input('Enter your product number: '))
-                    paramnum = int(input('Select your option :' , "1-name" , "2-id" , "3-amount" , "4-price"))
+                    print('Select your option :' , "1-name" , "2-id" , "3-amount" , "4-price")
+                    paramnum = int(input())
                     if paramnum == 1 :
-                        self.Edit_Product(number , 'name' )
+                        name = input('Enter your new product name: ')
+                        self.Edit_Product(number-1 , name , paramnum  )
                         print("--------Done----------") 
                     elif paramnum == 2 : 
-                        self.Edit_Product(number , 'id' )
+                        id = int(input('Enter your new product id: '))
+                        self.Edit_Product(number-1 , id , paramnum  )
                         print("--------Done----------") 
                     elif paramnum == 3 : 
-                        self.Edit_Product(number , 'amount' )
+                        amount = int(input('Enter your new product amount: '))
+                        self.Edit_Product(number-1 , amount ,paramnum  )
                         print("--------Done----------") 
                     elif paramnum == 4 : 
-                        self.Edit_Product(number , 'price' ) 
+                        price = int(input('Enter your new product price: '))
+                        self.Edit_Product(number-1 , price ,paramnum  ) 
                         print("--------Done----------") 
 
                 elif option == 5:   
-                    searchinput= input('Enter your product number: ') 
+                    searchinput= input('Enter your product name: ') 
                     self.Search_Product(searchinput)    
                     print("--------Done----------")  
 
                 elif option == 6:    
-                      number = int(input('Enter your product number: '))
-                      if len(self.products)>number and number>0 :
-                          amount = int(input('Enter your product amount: '))
-                          if self.products[number].amount > amount :
-                              self.Bill(number ,amount)
-                              self.products[number].amount -+ amount
+                      number = int(input('Enter your product number: '))                         
+                      if len(self.products)>=number and number>0 :
+                          
+                          amount = int(input('Enter your product amount: ')) 
+
+                          if int(self.products[number-1]['amount'])> amount :
+                              self.Bill(number-1 ,amount)
+                              after_amount =int(self.products[number-1]['amount']) 
+                              after_amount-= amount
+                              self.products[number-1]['amount']=after_amount
                               print("--------Done----------") 
                           else :
                               print("out of range of our product amount!!!") 
@@ -170,21 +165,35 @@ class Shop:
                             print("out of range!!!")  
 
                 elif option == 7:
-                    self.Show_Bill  
+                    self.Show_Bill()  
                     print("--------Done----------") 
         
                     
-                    
-
 
                 elif option == 0:
-                    print('Thanks message before exiting')
-                    exit()
+                    
+                       a_file = open("/media/shb/3C50BD1450BCD63C/programming/Github/Learn_Python/Assignment_5/database.csv", "w")
+                       arr = []
+                       for item in self.products:
+
+                            writer = csv.writer(a_file)
+                            for key, value in item.items():
+                                arr.append(value)
+
+                           
+                            writer.writerow(arr)    
+                            arr = []    
+                                    
+
+                       a_file.close()
+                       print('Thanks message before exiting')
+                       exit()
                 else:
                     print('Invalid option. Please enter a number between 1 and 4.')        
 
 
-
+new_shop = Shop()
+new_shop.Menu()
                       
 
 
