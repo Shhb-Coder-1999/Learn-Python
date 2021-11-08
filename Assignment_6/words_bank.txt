@@ -204,3 +204,5 @@ best
 behtarin
 for
 baraye
+hi
+salam
