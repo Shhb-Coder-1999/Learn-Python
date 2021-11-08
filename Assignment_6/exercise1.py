@@ -10,6 +10,7 @@ def Load_Data():
 
          for i in range(0,len(lines),2):
             WORDS.append( {'english':lines[i] , 'persion':lines[i+1]})
+        f.close()    
 
     except OSError:
       print ("Could not open read file ")
@@ -80,6 +81,7 @@ if __name__=='__main__':
              myfile.write(en_word)
              myfile.write("\n")
              myfile.write(fa_word)
+             myfile.close() 
 
         elif option == 2:
             print(translate_en2fa(input ('please write your text :')))

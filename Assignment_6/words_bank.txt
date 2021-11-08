@@ -206,3 +206,5 @@ for
 baraye
 hi
 salam
+apple
+sib
