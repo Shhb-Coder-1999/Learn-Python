@@ -14,12 +14,13 @@ bot = telebot.TeleBot("2137470201:AAFqMjvwzbRCo_WRfn23fchPD2xQdS-n3j0")
 
 @bot.message_handler(commands=['start'])
 def hello(message):
-  bot.reply_to(message, "Welcome to my bot " +  message.from_user.first_name +  " !")
+  bot.reply_to(message, "Welcome to my bot " +  message.from_user.first_name +  " ! click on /help to get more info")
 
 
-random_number = random.randint(0,50)
 @bot.message_handler(commands=['game'])
 def game(message):
+  global random_number
+  random_number = random.randint(0,50)
   bot.reply_to(message,"Guess a number Please between 0 , 50 ") 
   bot.register_next_step_handler(message , Get_Number)
 
@@ -35,7 +36,7 @@ def Get_Number(message):
     
 
 @bot.message_handler(commands=['age'])
-def game(message):
+def age(message):
   bot.reply_to(message,"Please enter your birth date (example 1378/9/23)") 
   bot.register_next_step_handler(message , Cal_Age)
 
@@ -45,7 +46,7 @@ def Cal_Age(message):
     bot.reply_to(message,round(int(dif.days)/365))
 
 @bot.message_handler(commands=['TextToVoice'])
-def game(message):
+def TextToVoice(message):
   bot.reply_to(message,"please enter your text :") 
   bot.register_next_step_handler(message , Text_To_Voice)
 
@@ -76,7 +77,7 @@ def Find_Greatest_Number_Index(message):
     bot.reply_to(message, user_list.index(max(user_list))) 
 
 @bot.message_handler(commands=['Qrcode'])
-def Qrcode(message):
+def Qr(message):
   bot.reply_to(message,"Enter your text :") 
   bot.register_next_step_handler(message , qr)
 
