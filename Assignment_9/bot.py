@@ -1,12 +1,14 @@
 # !pip install pyTelegramBotAPI
 # !pip install Khayyam
+# !pip install gTTS
+# !pip install qrcode[pil]
 # https://github.com/eternnoir/pyTelegramBotAPI 
-# https://www.heroku.com/
 
 import telebot
 import random
 from khayyam import JalaliDatetime
-
+from gtts import gTTS
+import qrcode
 
 bot = telebot.TeleBot("2137470201:AAFqMjvwzbRCo_WRfn23fchPD2xQdS-n3j0")
 
@@ -18,7 +20,7 @@ def hello(message):
 random_number = random.randint(0,50)
 @bot.message_handler(commands=['game'])
 def game(message):
-  bot.reply_to(message,"Guess a number Please") 
+  bot.reply_to(message,"Guess a number Please between 0 , 50 ") 
   bot.register_next_step_handler(message , Get_Number)
 
 def Get_Number(message):
@@ -41,32 +43,67 @@ def Cal_Age(message):
     date = message.text.split('/')
     dif = JalaliDatetime.now()-JalaliDatetime(date[0],date[1],date[2])
     bot.reply_to(message,round(int(dif.days)/365))
-  
+
+@bot.message_handler(commands=['TextToVoice'])
+def game(message):
+  bot.reply_to(message,"please enter your text :") 
+  bot.register_next_step_handler(message , Text_To_Voice)
+
+def Text_To_Voice(message):
+    mytext = message.text
+    language = 'en'
+    myobj = gTTS(text=mytext , lang=language , slow=False)
+    myobj.save("voice.ogg")
+    myobj = open('voice.ogg', 'rb')
+    bot.send_voice(message.chat.id, myobj)
+
+@bot.message_handler(commands=['FindGreatestNumber'])
+def FindGreatestNumber(message):
+  bot.reply_to(message,"Enter elements of a list separated by space :") 
+  bot.register_next_step_handler(message , Find_Greatest_Number)
+
+def Find_Greatest_Number(message):
+    user_list = message.text.split() 
+    bot.reply_to(message, max(user_list)) 
+
+@bot.message_handler(commands=['FindGreatestNumberIndex'])
+def FindGreatestNumberIndex(message):
+  bot.reply_to(message,"Enter elements of a list separated by space :") 
+  bot.register_next_step_handler(message , Find_Greatest_Number_Index)
+
+def Find_Greatest_Number_Index(message):
+    user_list = message.text.split() 
+    bot.reply_to(message, user_list.index(max(user_list))) 
+
+@bot.message_handler(commands=['Qrcode'])
+def Qrcode(message):
+  bot.reply_to(message,"Enter your text :") 
+  bot.register_next_step_handler(message , qr)
+
+def qr(message):
+    img = qrcode.make(message.text) 
+    img.save('qrcode.png')
+    photo = open('qrcode.png', 'rb')
+    bot.send_photo(message.chat.id, photo)
+          
 
 @bot.message_handler(commands=['help'])
 def help(message):
-  bot.reply_to(message,"How Can I Help You ?? What Do You Need Right Now? ") 
+   bot.reply_to(message,
+                 """
+                 /start - welcome to my bot
+/game  = guess the number 
+/age  = calculate your age 
+/TextToVoice  = convert text to voice 
+/FindGreatestNumber = find greatest number 
+/FindGreatestNumberIndex = find index of greatest number 
+/Qrcode = make Qrcode  
+/help = menu""" )
 
-fals =['1','2','3']
-@bot.message_handler(commands=['fal']) 
-def fal(message):
-  x = random.choice(fals)
-  bot.reply_to(message,x)
 
 @bot.message_handler(func=lambda m: True)
 def echo_all(message):
-  if message.text == "Hello":
-    bot.reply_to(message, "Hi")
-  elif message.text == "How Are you?":
-    bot.reply_to(message, "tnx and you ?")
-  elif message.text == "bye":
-    bot.reply_to(message, "ok bye !") 
-  elif   message.text == "sent photo":
-    my_photo = open ("default-logo_mail-1431892093.jpg‏","rb")
-    bot.send_photo(message.chat.id , my_photo)
-
-  else :
-    bot.reply_to(message, "Cant undersyand what did you say !!") 
+    bot.reply_to(message, "Cant undersyand what did you say !! please click on /help to get more info") 
 
 
 bot.infinity_polling()  
