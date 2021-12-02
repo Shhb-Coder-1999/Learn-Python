@@ -17,6 +17,7 @@ def hello(message):
   bot.reply_to(message, "Welcome to my bot " +  message.from_user.first_name +  " ! click on /help to get more info")
 
 btn=None
+random_number = 0
 
 @bot.message_handler(commands=['game'])
 def game(message):
@@ -31,11 +32,14 @@ def game(message):
 
 def Get_Number(message):
     global btn
-    if int(message.text) > random_number:
-      bot.reply_to(message, "Greater than Goal Number , plz try again !")
+    if message.text == 'again':
+      msg = bot.send_message(message.chat.id, 'new game started')
+      game(msg)
+    elif int(message.text) > random_number:
+      bot.reply_to(message, "Greater than Goal Number , plz try again !" , reply_markup=btn )
       bot.register_next_step_handler(message , Get_Number)
     elif int(message.text) < random_number :
-      bot.reply_to(message, "Smaller than Goal Number , plz try again !")
+      bot.reply_to(message, "Smaller than Goal Number , plz try again !" , reply_markup=btn )
       bot.register_next_step_handler(message , Get_Number)
     elif int(message.text) == random_number:
       bot.send_message(message.chat.id, 'nice !! you find it', reply_markup=btn )
