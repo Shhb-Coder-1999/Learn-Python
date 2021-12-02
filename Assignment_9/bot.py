@@ -32,7 +32,7 @@ def game(message):
 
 def Get_Number(message):
     global btn
-    if message.text == 'again':
+    if message.text == 'New Game':
       msg = bot.send_message(message.chat.id, 'new game started')
       game(msg)
     elif int(message.text) > random_number:
