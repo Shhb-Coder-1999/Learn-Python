@@ -25,7 +25,7 @@ def game(message):
   global btn
   random_number = random.randint(0,50)
   btn = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-  content = telebot.types.KeyboardButton('again')
+  content = telebot.types.KeyboardButton('New Game')
   btn.add(content)
   bot.reply_to(message,"Guess a number Please between 0 , 50 ") 
   bot.register_next_step_handler(message , Get_Number)
