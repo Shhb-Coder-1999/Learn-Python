@@ -42,7 +42,8 @@ def Get_Number(message):
       bot.reply_to(message, "Smaller than Goal Number , plz try again !" , reply_markup=btn )
       bot.register_next_step_handler(message , Get_Number)
     elif int(message.text) == random_number:
-      bot.send_message(message.chat.id, 'nice !! you find it', reply_markup=btn )
+      bot.send_message(message.chat.id, 'nice !! you find it:)', reply_markup=btn )
+      
 
     
 
