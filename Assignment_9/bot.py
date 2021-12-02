@@ -16,15 +16,21 @@ bot = telebot.TeleBot("2137470201:AAFqMjvwzbRCo_WRfn23fchPD2xQdS-n3j0")
 def hello(message):
   bot.reply_to(message, "Welcome to my bot " +  message.from_user.first_name +  " ! click on /help to get more info")
 
+btn=None
 
 @bot.message_handler(commands=['game'])
 def game(message):
   global random_number
+  global btn
   random_number = random.randint(0,50)
+  btn = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+  content = telebot.types.KeyboardButton('again')
+  btn.add(content)
   bot.reply_to(message,"Guess a number Please between 0 , 50 ") 
   bot.register_next_step_handler(message , Get_Number)
 
 def Get_Number(message):
+    global btn
     if int(message.text) > random_number:
       bot.reply_to(message, "Greater than Goal Number , plz try again !")
       bot.register_next_step_handler(message , Get_Number)
@@ -32,7 +38,8 @@ def Get_Number(message):
       bot.reply_to(message, "Smaller than Goal Number , plz try again !")
       bot.register_next_step_handler(message , Get_Number)
     elif int(message.text) == random_number:
-      bot.reply_to(message, "Nice !!")
+      bot.send_message(message.chat.id, 'nice !! you find it', reply_markup=btn )
+
     
 
 @bot.message_handler(commands=['age'])

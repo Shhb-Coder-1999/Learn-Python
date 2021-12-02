@@ -2,3 +2,4 @@ gTTS
 Khayyam
 pyTelegramBotAPI
 qrcode
+Image
