@@ -111,9 +111,9 @@ class Game(arcade.Window):
 
      def on_draw(self):
         arcade,start_render()
-        if self.snake.score < 0 or self.snake.center_x<0 or self.snake.center_x>SCREEN_WIDTH or self.snake.center_y<0 or self.snake.center_y>SCREEN_HEIGHT:
-            arcade.draw_text('Game Over',SCREEN_WIDTH//2, SCREEN_HEIGHT//2,arcade.color.BLACK, 25, width=SCREEN_WIDTH, align='left')
-            arcade.exit() 
+        if self.snake.score < 0 or self.snake.body[0][0]<0 or self.snake.body[0][0]>SCREEN_WIDTH or self.snake.body[0][1]<0 or self.snake.body[0][1]>SCREEN_HEIGHT:
+            arcade.draw_text('Game Over',SCREEN_WIDTH//2, SCREEN_HEIGHT//2,arcade.color.BLACK, 35, width=SCREEN_WIDTH)
+           
         else:
             arcade.draw_text('Score : '+str(self.snake.score),start_x=20 , start_y=40 , font_size=30) 
             self.snake.draw()
