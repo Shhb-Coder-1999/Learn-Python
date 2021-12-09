@@ -8,9 +8,7 @@ from pyglet.libs.x11.xlib import Screen
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 1000
 
-class QuitButton(arcade.gui.UIFlatButton):
-    def on_click(self, event: arcade.gui.UIOnClickEvent):
-        arcade.exit()
+
 
 
 class Snake(arcade.Sprite):
@@ -24,24 +22,46 @@ class Snake(arcade.Sprite):
         self.score = 0
         self.center_x = SCREEN_WIDTH //2
         self.center_y = SCREEN_HEIGHT //2
+        self.body=[[SCREEN_WIDTH //2,SCREEN_HEIGHT //2,30,30,arcade.color.GREEN,None,None]]
 
     def move (self):
        pass
 
     def eat (self , obj_x , obj_y , obj_type):
-       if self.center_y == obj_y and self.center_x  == obj_x :
+       if self.body[0][1] == obj_y and self.body[0][0]== obj_x :
          if obj_type == 'apple':      
            self.score = self.score + 1
+           self.body.append([ self.body[-1][5],self.body[-1][6],30,30,arcade.color.GREEN,None,None])
            return True
          elif obj_type == 'pear':
-           self.score = self.score + 2
-           return True 
+                self.score = self.score + 2
+                self.body.append([ self.body[-1][5],self.body[-1][6],30,30,arcade.color.GREEN,None,None])
+                if(self.body[-1][0]==self.body[-2][0]):
+                    if(self.body[-1][1]>self.body[-2][1]):
+                        self.body.append([ self.body[-1][0],self.body[-1][1]+20,30,30,arcade.color.GREEN,None,None])
+                        self.body[-1][5]=self.body[-1][0]
+                        self.body[-1][6]=self.body[-1][1]+20
+                    else:
+                        self.body.append([ self.body[-1][0],self.body[-1][1]-20,30,30,arcade.color.GREEN,None,None])
+                        self.body[-1][5]=self.body[-1][0]
+                        self.body[-1][6]=self.body[-1][1]-20
+                elif(self.body[-1][1]==self.body[-2][1]):
+                    if(self.body[-1][0]>self.body[-2][0]):
+                        self.body.append([ self.body[-1][0]+20,self.body[-1][1],30,30,arcade.color.GREEN,None,None])
+                        self.body[-1][5]=self.body[-1][0]+20
+                        self.body[-1][6]=self.body[-1][1]
+                    else:
+                        self.body.append([ self.body[-1][0]-20,self.body[-1][1],30,30,arcade.color.GREEN,None,None])
+                        self.body[-1][5]=self.body[-1][0]-20
+                        self.body[-1][6]=self.body[-1][1]
          elif obj_type == 'hitch':
-           self.score = self.score - 1  
-           return True       
+            self.score = self.score - 1  
+            self.body.pop(-1)
+         return True        
 
     def draw (self):
-       arcade.draw_rectangle_filled(self.center_x , self.center_y , self.width , self.height , self.color)  
+       for knuckle in self.body:
+            arcade.draw_rectangle_filled(knuckle[0],knuckle[1],knuckle[2],knuckle[3],knuckle[4])
 
 
 
@@ -91,31 +111,63 @@ class Game(arcade.Window):
 
      def on_draw(self):
         arcade,start_render()
-        arcade.draw_text('Score : '+str(self.snake.score),start_x=20 , start_y=40 , font_size=30) 
-        self.snake.draw()
-        self.apple.draw()
-        self.pear.draw()
-        self.hitch.draw()
+        if self.snake.score < 0 or self.snake.center_x<0 or self.snake.center_x>SCREEN_WIDTH or self.snake.center_y<0 or self.snake.center_y>SCREEN_HEIGHT:
+            arcade.draw_text('Game Over',SCREEN_WIDTH//2, SCREEN_HEIGHT//2,arcade.color.BLACK, 25, width=SCREEN_WIDTH, align='left')
+            arcade.exit() 
+        else:
+            arcade.draw_text('Score : '+str(self.snake.score),start_x=20 , start_y=40 , font_size=30) 
+            self.snake.draw()
+            self.apple.draw()
+            self.pear.draw()
+            self.hitch.draw()
+
+         
      
      def on_key_release(self, symbol: int, modifiers: int):
          if  symbol == arcade.key.LEFT:
-            self.snake.center_x -= 20
+             
+            self.snake.body[-1][5]=   self.snake.body[0][0]
+            self.snake.body[-1][6]=   self.snake.body[0][1]
+            self.snake.body[-1][0]=   self.snake.body[0][0]-20
+            self.snake.body[-1][1]=   self.snake.body[0][1]         
+            tmp=self.snake.body[-1]
+            self.snake.body.pop(-1)
+            self.snake.body.insert(0,tmp)   
             self.check_pos()
                 
          elif symbol == arcade.key.RIGHT:
-            self.snake.center_x += 20
+            self.snake.body[-1][5]=   self.snake.body[0][0]
+            self.snake.body[-1][6]=   self.snake.body[0][1]
+            self.snake.body[-1][0]=   self.snake.body[0][0]+20
+            self.snake.body[-1][1]=   self.snake.body[0][1]
+            tmp=self.snake.body[-1]
+            self.snake.body.pop(-1)
+            self.snake.body.insert(0,tmp)
+
             self.check_pos()
 
          elif symbol == arcade.key.UP:
-            self.snake.center_y += 20
+            self.snake.body[-1][5]=    self.snake.body[0][0]
+            self.snake.body[-1][6]=    self.snake.body[0][1]
+            self.snake.body[-1][0]=   self.snake.body[0][0]
+            self.snake.body[-1][1]=   self.snake.body[0][1]+20
+            tmp=self.snake.body[-1]
+            self.snake.body.pop(-1)
+            self.snake.body.insert(0,tmp)
             self.check_pos()
 
          elif symbol == arcade.key.DOWN:
-            self.snake.center_y -= 20
+            self.snake.body[-1][5]=    self.snake.body[0][0]
+            self.snake.body[-1][6]=    self.snake.body[0][1]
+            self.snake.body[-1][0]=   self.snake.body[0][0]
+            self.snake.body[-1][1]=   self.snake.body[0][1]-20
+            tmp=self.snake.body[-1]
+            self.snake.body.pop(-1)
+            self.snake.body.insert(0,tmp)
             self.check_pos()
              
      def check_pos(self):
-            
+      #   self.gameover()
         if self.snake.eat(self.apple.apple.center_x , self.apple.apple.center_y ,'apple') == True:  
                   self.apple.apple.center_x = random.randrange(60, SCREEN_HEIGHT - self.apple.center_x , 20) 
                   self.apple.apple.center_y = random.randrange(60, SCREEN_WIDTH - self.apple.center_y , 20)
@@ -126,13 +178,19 @@ class Game(arcade.Window):
 
         elif self.snake.eat(self.hitch.hitch.center_x , self.hitch.hitch.center_y ,'hitch') == True:  
                   self.hitch.hitch.center_x = random.randrange(60, SCREEN_HEIGHT - self.hitch.center_x , 20) 
-                  self.hitch.hitch.center_y = random.randrange(60, SCREEN_WIDTH - self.hitch.center_y , 20)                    
+                  self.hitch.hitch.center_y = random.randrange(60, SCREEN_WIDTH - self.hitch.center_y , 20)
 
+   #   def gameover(self):
+   #          if self.snake.score < 0 :
+   #           arcade.draw_text('Game Over',SCREEN_WIDTH//2, SCREEN_HEIGHT//2,arcade.color.BLACK, 25, width=SCREEN_WIDTH, align='left')
+          
 
-
-       
 
 
 
 my_game = Game()
 arcade.run()
+
+
+
+
