@@ -24,8 +24,39 @@ class Snake(arcade.Sprite):
         self.center_y = SCREEN_HEIGHT //2
         self.body=[[SCREEN_WIDTH //2,SCREEN_HEIGHT //2,30,30,arcade.color.GREEN,None,None]]
 
-    def move (self):
-       pass
+    def move (self , dir):
+       if dir == 'DOWN':
+            self.body[-1][5]=    self.body[0][0]
+            self.body[-1][6]=    self.body[0][1]
+            self.body[-1][0]=   self.body[0][0]
+            self.body[-1][1]=   self.body[0][1]-20
+            tmp=self.body[-1]
+            self.body.pop(-1)
+            self.body.insert(0,tmp)
+       elif dir == 'LEFT':
+            self.body[-1][5]=   self.body[0][0]
+            self.body[-1][6]=   self.body[0][1]
+            self.body[-1][0]=   self.body[0][0]-20
+            self.body[-1][1]=   self.body[0][1]         
+            tmp=self.body[-1]
+            self.body.pop(-1)
+            self.body.insert(0,tmp)   
+       elif dir == 'RIGHT':
+            self.body[-1][5]=   self.body[0][0]
+            self.body[-1][6]=   self.body[0][1]
+            self.body[-1][0]=   self.body[0][0]+20
+            self.body[-1][1]=   self.body[0][1]
+            tmp=self.body[-1]
+            self.body.pop(-1)
+            self.body.insert(0,tmp)
+       elif dir == 'UP':
+            self.body[-1][5]=    self.body[0][0]
+            self.body[-1][6]=    self.body[0][1]
+            self.body[-1][0]=   self.body[0][0]
+            self.body[-1][1]=   self.body[0][1]+20
+            tmp=self.body[-1]
+            self.body.pop(-1)
+            self.body.insert(0,tmp)    
 
     def eat (self , obj_x , obj_y , obj_type):
        if self.body[0][1] == obj_y and self.body[0][0]== obj_x :
@@ -125,45 +156,19 @@ class Game(arcade.Window):
      
      def on_key_release(self, symbol: int, modifiers: int):
          if  symbol == arcade.key.LEFT:
-             
-            self.snake.body[-1][5]=   self.snake.body[0][0]
-            self.snake.body[-1][6]=   self.snake.body[0][1]
-            self.snake.body[-1][0]=   self.snake.body[0][0]-20
-            self.snake.body[-1][1]=   self.snake.body[0][1]         
-            tmp=self.snake.body[-1]
-            self.snake.body.pop(-1)
-            self.snake.body.insert(0,tmp)   
+            self.snake.move('LEFT')
             self.check_pos()
                 
          elif symbol == arcade.key.RIGHT:
-            self.snake.body[-1][5]=   self.snake.body[0][0]
-            self.snake.body[-1][6]=   self.snake.body[0][1]
-            self.snake.body[-1][0]=   self.snake.body[0][0]+20
-            self.snake.body[-1][1]=   self.snake.body[0][1]
-            tmp=self.snake.body[-1]
-            self.snake.body.pop(-1)
-            self.snake.body.insert(0,tmp)
-
+            self.snake.move('RIGHT')
             self.check_pos()
 
          elif symbol == arcade.key.UP:
-            self.snake.body[-1][5]=    self.snake.body[0][0]
-            self.snake.body[-1][6]=    self.snake.body[0][1]
-            self.snake.body[-1][0]=   self.snake.body[0][0]
-            self.snake.body[-1][1]=   self.snake.body[0][1]+20
-            tmp=self.snake.body[-1]
-            self.snake.body.pop(-1)
-            self.snake.body.insert(0,tmp)
+            self.snake.move('UP')
             self.check_pos()
 
          elif symbol == arcade.key.DOWN:
-            self.snake.body[-1][5]=    self.snake.body[0][0]
-            self.snake.body[-1][6]=    self.snake.body[0][1]
-            self.snake.body[-1][0]=   self.snake.body[0][0]
-            self.snake.body[-1][1]=   self.snake.body[0][1]-20
-            tmp=self.snake.body[-1]
-            self.snake.body.pop(-1)
-            self.snake.body.insert(0,tmp)
+            self.snake.move('DOWN')
             self.check_pos()
              
      def check_pos(self):
@@ -181,7 +186,7 @@ class Game(arcade.Window):
                   self.hitch.hitch.center_y = random.randrange(60, SCREEN_WIDTH - self.hitch.center_y , 20)
 
    #   def gameover(self):
-   #          if self.snake.score < 0 :
+   #          if self.score < 0 :
    #           arcade.draw_text('Game Over',SCREEN_WIDTH//2, SCREEN_HEIGHT//2,arcade.color.BLACK, 25, width=SCREEN_WIDTH, align='left')
           
 
