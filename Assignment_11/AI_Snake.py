@@ -130,7 +130,6 @@ class Hitch(arcade.Sprite):
 
      def draw(self):
         self.hitch.draw()                
-             
 
 class Game(arcade.Window):
 
