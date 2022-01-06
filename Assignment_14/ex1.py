@@ -133,6 +133,7 @@ class Calculator(QMainWindow):
 
 
   def sum(self):
+       
        if self.result !=0:
         self.result = self.result + float(self.input_num)
        else :
