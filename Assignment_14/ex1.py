@@ -88,50 +88,33 @@ class Calculator(QMainWindow):
                 self.last_op = 'div' 
 
       elif  type == 'sin':
-          if self.last_op != 'equal':
-             self.sin()
-          else :
-                self.ui.lcdNumber.display("0") 
+                self.sin()
                 self.input_num = None
                 self.last_op = 'sin' 
 
       elif  type == 'cos':
-          if self.last_op != 'equal':
              self.cos()
-          else :
-                self.ui.lcdNumber.display("0") 
-                self.input_num = None
-                self.last_op = 'cos'  
+             self.input_num = None
+             self.last_op = 'sin' 
 
       elif  type == 'tan':
-          if self.last_op != 'equal':
+
              self.tan()
-          else :
-                self.ui.lcdNumber.display("0") 
-                self.input_num = None
-                self.last_op = 'tan'  
+             self.input_num = None
+             self.last_op = 'tan'  
 
       elif  type == 'cot':
-          if self.last_op != 'equal':
-             self.cot()
-          else :
-                self.ui.lcdNumber.display("0") 
+                self.cot()
                 self.input_num = None
                 self.last_op = 'cot'  
 
       elif  type == 'sqrt':
-          if self.last_op != 'equal':
-             self.sqrt()
-          else :
-                self.ui.lcdNumber.display("0") 
+                self.sqrt()
                 self.input_num = None
                 self.last_op = 'sqrt'  
 
       elif  type == 'log':
-          if self.last_op != 'equal':
-             self.log()
-          else :
-                self.ui.lcdNumber.display("0") 
+                self.log()
                 self.input_num = None
                 self.last_op = 'log'        
 
@@ -189,51 +172,79 @@ class Calculator(QMainWindow):
        self.last_op = 'div'
 
   def sin(self):
-       self.result = sin(radians(float(self.input_num)))
+       if self.result == 0:
+         self.result = sin(radians(float(self.input_num)))
+       elif self.result != 0:
+         self.result = sin(radians(float(self.result)))
+
        self.ui.lcdNumber.display(self.result) 
        self.input_num = None
        self.last_op = 'sin'
 
   def cos(self):
-       self.result = cos(radians(float(self.input_num)))
+       if self.result == 0:
+         self.result =  cos(radians(float(self.input_num)))
+       elif self.result != 0:
+         self.result = cos(radians(float(self.result)))
+
        self.ui.lcdNumber.display(self.result) 
        self.input_num = None
        self.last_op = 'cos'   
 
   def tan(self):
-       self.result = tan(radians(float(self.input_num)))
+       if self.result == 0:
+         self.result = tan(radians(float(self.input_num)))
+       elif self.result != 0:
+         self.result = tan(radians(float(self.result)))       
+
        self.ui.lcdNumber.display(self.result) 
        self.input_num = None
        self.last_op = 'tan'
 
   def cot(self):
-       self.result = 1/tan(radians(float(self.input_num)))
+       if self.result == 0:
+         self.result = 1/tan(radians(float(self.input_num)))
+       elif self.result != 0:
+         self.result = 1/tan(radians(float(self.result)))      
+
+
        self.ui.lcdNumber.display(self.result) 
        self.input_num = None
        self.last_op = 'cot' 
 
   def log(self):
-       self.result = log(float(self.input_num))
+       if self.result == 0:
+         self.result =log(float(self.input_num) , 10)
+       elif self.result != 0:
+         self.result = log(float(self.result)  , 10)        
+
        self.ui.lcdNumber.display(self.result) 
        self.input_num = None
        self.last_op = 'log'  
 
   def sqrt(self):
-       self.result = sqrt(float(self.input_num))
+       if self.result == 0:
+         self.result =sqrt(float(self.input_num))
+       elif self.result != 0:
+         self.result = sqrt(float(self.result)) 
+
        self.ui.lcdNumber.display(self.result) 
        self.input_num = None
        self.last_op = 'sqrt' 
 
   def symmetry(self):
-       if self.input_num[0]  == '-':
-            self.result = float(self.input_num[1:])
+       if self.result == 0:
+          self.result = self.input_num       
+      
+
+       print("------------------")
+       if  '-' in str(self.result):
+            self.result = float(str(self.result)[1:])
             self.ui.lcdNumber.display(self.result) 
-            self.input_num = None
             self.last_op = 'symmetry' 
        else: 
            self.result =float("-" + self.input_num)
-           self.ui.lcdNumber.display(self.result) 
-           self.input_num = None
+           self.ui.lcdNumber.display(self.result)
            self.last_op = 'symmetry' 
 
   def clear(self):
