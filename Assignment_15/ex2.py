@@ -7,7 +7,7 @@ def Pascal_triangle (row):
         return list 
  else:
     list.append([1,1])         
-    for i in range(1, row):
+    for i in range(1, row-1):
       temp_list = []
       for j in range(0,len(list)-1):
         if j+1 < len(list):     
@@ -19,9 +19,10 @@ def Pascal_triangle (row):
     return list
 
 x = int(input("Enter number of rows : "))
-result = Pascal_triangle(x-1)
+result = Pascal_triangle(x)
 for i in range(0, len(result)):
-    print(result[i])
+  print(*result[i])
+
 
 
     
