@@ -1,2 +1,2 @@
-INSERT INTO Products (name,city,country)
+INSERT INTO Customers (name,city,country)
 VALUES ('shahab', 'mashhad', 'iran');
