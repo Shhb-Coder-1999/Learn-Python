@@ -22,8 +22,3 @@ x = int(input("Enter number of rows : "))
 result = Pascal_triangle(x)
 for i in range(0, len(result)):
   print(*result[i])
-
-
-
-    
-
